@@ -1,7 +1,7 @@
 # DigitalDraw
 diggity diggity digital draw
 
-##test case for very basic prototype
+## test case for very basic prototype
 
 rooms:  A B C
 people: 1 2 3
@@ -21,7 +21,7 @@ outcome:
 2: C
 3: B
 
-##tasks
+## tasks
 
     * record all room types -anna
     * create google form
