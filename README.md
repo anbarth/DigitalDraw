@@ -24,7 +24,7 @@ outcome:
 ## tasks
 
     * record all room types -anna
-    * create google form
+    * create google form - anna
     * parse output from google forms
     * simulate room draw where everyone pulls one bed - lef
 
