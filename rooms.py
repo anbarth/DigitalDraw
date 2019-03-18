@@ -1,34 +1,37 @@
 rooms = {
-    "at1" : 0, #at single in ste
-    "at2" : 1, #at dbl in ste
-    "at3" : 2, #at triple
-    "atef" : 3, #at efficiency
-    "ca1" : 4, #case single
-    "ca2" : 5,
-    "ca3" : 6,
-    "ca4" : 7,
-    "dws1" : 8,
-    "dws3" : 9,
-    "dwo1" : 10,
-    "dwo3" : 11,
-    "e1" : 12,
-    "e2" : 13,
-    "l22s" : 14,
-    "l22d" : 15,
-    "l41s" : 16,
-    "l41d" : 17,
-    "n1" : 18,
-    "n2" : 19,
-    "so31s" : 20, #sontag single in a suite of 3 singles, 1 double
-    "so31d" : 21,
-    "so21s" : 22,
-    "so21d" : 23,
-    "so11s" : 24,
-    "so11d" : 25,
-    "s4s" : 26, #south single in a 4-man ste
-    "s3s" : 27,
-    "s2s" : 29,
-    "s2"  : 30, #south double
-    "w1" : 31,
-    "w2" : 32
+    # room type : [# people allowed, # rooms of this type]
+    "Atwood single" : [1, 48],
+    "Atwood suite double" : [2, 12], 
+    "Atwood triple" : [3, 12], 
+    "Atwood column double/efficiency" : [2, 10], 
+    "Case single" : [1, 32],
+    "Case double" : [2, 32],
+    "Case triple" : [3, 1],
+    "Case quad" : [4, 4],
+    "Drinkward suite single" : [1, 28],
+    "Drinkward suite triple" : [3, 10],
+    "Drinkward O-side single" : [1, 37],
+    "Drinkward O-side triple" : [3, 25],
+    "East single" : [1, 16],
+    "East double" : [2, 36],
+    "Linde single in a suite with 2 singles, 2 doubles" : [1, 12],
+    "Linde double in a suite with 2 singles, 2 doubles" : [2, 12],
+    "Linde single in a suite with 4 singles, 1 double" : [1, 8],
+    "Linde double in a suite with 4 singles, 1 double" : [2, 2],
+    "Linde double in a suite with 3 doubles" : [2, 12],
+    "Linde double in a suite with 2 doubles" : [2, 2],
+    "North single" : [1, 16],
+    "North double" : [2, 36],
+    "Sontag single in a suite with 3 singles, 1 double" : [1, 36], 
+    "Sontag double in a suite with 3 singles, 1 double" : [2, 12],
+    "Sontag single in a suite with 2 singles, 1 double" : [1, 6],
+    "Sontag double in a suite with 2 singles, 1 double" : [2, 3],
+    "Sontag single in a suite with 1 single, 1 double" : [1, 2],
+    "Sontag double in a suite with 1 single, 1 double" : [2, 2],
+    "South single in a suite with 4 singles" : [1, 32], 
+    "South single in a suite with 3 singles" : [1, 24],
+    "South single in a suite with 2 singles" : [1, 8],
+    "South double" : [2, 4],
+    "West single" : [1, 16],
+    "West double" : [2, 36]
 }
