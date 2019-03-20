@@ -1,89 +1,176 @@
+##############################################################
+####################### ROOMS ################################
+##############################################################
 
-
-namenum = {
-    "abarth" : 0,
-    "lfriedberg" : 1,
-    "tschneider" : 2,
-    "jwang" : 3,
-    "gotit": 4
+rooms = {
+    # room type : [# people allowed, # rooms of this type]
+    "r1" : [1, 3],
+    "r2" : [2, 1],
+    "r3" : [3, 1]
 }
 
-numname = dict((reversed(item) for item in namenum.items()))
 
-class Room:
-    def __init__(self, beds, unit):
-        self.beds = beds
-        self.unit = unit
-        self.occupants = []
-    
-    def getAttributes(self):
-        a = "occupants: "
-        for i in self.occupants:
-            a = a + i.getEmail() + ", "
-        a = a + "  unit: " + str(self.unit)
-        return a
+##############################################################
+###################### READING ###############################
+##############################################################
 
-    def isFull(self):
-        return len(self.occupants) == self.beds
+import csv
 
-    def pull(self, newKid):
-        self.occupants.append(newKid)
-        if len(self.occupants) > self.beds:
-            print("this is so crowded")
-
-
-
+# a person has only:
+# a name, a list of room draw plans, and a list of people who can pull them
+# because as RALs, that is all we care about
 class Person:
-    def __init__(self, number, email, plans):
-        self.number= number
+    def __init__(self, email, plans, pullBuddies):
         self.email = email
         self.plans = plans
-       # self.room = 
+        self.pullBuddies = pullBuddies
 
-    def getEmail(self):
-        return self.email
+def cleanEmail(email):
+    parts = email.split("@")
+    return parts[0].strip().lower()
 
-    def addPlan(self,newPlan):
-        self.plans.append(newPlan)
+emailToPerson = {}
 
-    def getPlans(self):
-        return self.plans
+responses = open("ddraw-responses.csv")
+reader = csv.reader(responses,delimiter=',')
+next(reader) # skip the first row
 
-    def pull(self, newRoom):
-        self.room = newRoom
+MAX_NUM_PLANS = 4
 
- #   def getRoom(self):
-        return self.room
-  
-#rooms        
-room1 = Room(1,1)
-room2 = Room(1,2)
-room3 = Room(1,3)
-room4 = Room(1,4)
-room5 = Room(1,5)
+for row in reader:
+    email = cleanEmail(row[1])
 
-#test plans
-annaplan = [room1]
-lilypaln = [room2, room4]
-tplan = [room2, room1, room3]
-wangplant = [room3, room4]
-gotaplan = [room5, room1]
+    pullBuds = []
+    pullBudsStr = row[4*MAX_NUM_PLANS + 2]
+    if pullBudsStr.lower().strip() != 'none':
+            pullBudsMessy = pullBudsStr.split(",")
+            pullBuds = [cleanEmail(x) for x in pullBudsMessy]
 
-plans = [annaplan,lilypaln,tplan,wangplant,gotaplan]
-pals=[]
+    # a list of plans
+    # each plan is of form (room type, pull list, lock pull list)
+    plans = []
 
-for i in range(0,5):
-    pals.append(Person(i, numname[i], plans[i]))
+    # cycle through plans
+    for i in range(0,MAX_NUM_PLANS):
+        if row[4*i+2] == "": break
+        room = row[4*i+2]
 
-def draw(ral):
-    for plan in ral.getPlans():
-        if not plan.isFull():
-            plan.pull(ral)
-            ral.pull(plan)
-            print(plan.getAttributes())
-            return
-    print("no valid plans :(")
+        pulls = []
+        pullsStr = row[4*i+3]
+        if pullsStr.lower().strip() != 'none':
+            pullsMessy = pullsStr.split(",")
+            pulls = [cleanEmail(x) for x in pullsMessy]
 
-def roomDraw():
-    for ral in pals:
-        draw(ral)
+        lockPulls = []
+        lockPullStr = row[4*i+4]
+        if lockPullStr.lower().strip != 'none':
+            lockPullsMessy = lockPullStr.split(",")
+            lockPulls = [cleanEmail(x) for x in lockPullsMessy]
+
+        plans.append([room, pulls, lockPulls])
+    
+    emailToPerson[email] = Person(email, plans, pullBuds)
+
+
+emailToNum = {
+    "a" : 0,
+    "b" : 1,
+    "c" : 2,
+    "d" : 3,
+    "e": 4,
+    "f": 5,
+    "g": 6,
+    "h": 7
+}
+
+
+numToEmail = dict((reversed(item) for item in emailToNum.items()))
+
+
+##############################################################
+##################### ROOM DRAW! #############################
+##############################################################
+
+emailToRoom = {}
+
+for myNum in range(len(emailToNum)):
+    myEmail = numToEmail[myNum]
+
+    if myEmail not in emailToPerson:
+        print(myEmail+" failed to make any plans")
+        continue
+    
+    me = emailToPerson[myEmail]
+
+    for plan in me.plans:
+
+        # don't bother if im already in a room
+        if myEmail in emailToRoom: continue
+
+        desiredRoom = plan[0]
+
+        # no more rooms of this type
+        if rooms[desiredRoom][1] <= 0:
+            continue
+
+        # case 1: pulling a single
+        if rooms[desiredRoom][0] == 1:
+            # pull myself into the room & mark it occupied
+            emailToRoom[myEmail] = desiredRoom
+            rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
+
+            # now try to pull my friend into another room...
+            # must be more rooms of this type
+            if rooms[desiredRoom][1] > 0: 
+                # must have someone to pull
+                if len(plan[1]) > 0:
+
+                    friendEmail = plan[1][0]
+                    friend = emailToPerson[friendEmail]
+
+                    # i must be allowed to pull this person
+                    if myEmail in friend.pullBuddies:
+                        # this person cant already have a room
+                        if friendEmail not in emailToRoom:
+                            # phew! that was a lot of nested ifs
+                            # pull my friend into a room & mark it occupied
+                            emailToRoom[friendEmail] = desiredRoom
+                            rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
+                
+            # now try to lock pull iff my pull was successful OR this is a sontag 3-man
+            # first, check that i did actually do a pull (or that i pulled a sontag 3-man)
+                # ^ i think the easiest way to do that will be to just add a boolean lmao
+            # then check that i want to lock-pull the correct # of people
+            # then check that my lock-pullable room type is still available
+            # then check that my lock pull wants to be pulled & hasnt found a room already
+            # then pull!
+
+        # case 2: pulling a double, triple, or quad
+        else:
+            isValid = True
+            # not pulling right number of roomies
+            if len(plan[1]) != rooms[desiredRoom][0]-1:
+                print(myEmail+" made an invalid pull - not enough roommates")
+                isValid = False
+            # are my roomies also ok with this plan?
+            for friendEmail in plan[1]:
+                friend = emailToPerson[friendEmail]
+
+                # am i allowed to pull this person?
+                if myEmail not in friend.pullBuddies:
+                    isValid = False
+
+                # has this person already found a room?
+                if friendEmail in emailToRoom:
+                    isValid = False
+
+            if isValid:
+                # pull myself into the room
+                emailToRoom[myEmail] = desiredRoom
+
+                # pull all my friends
+                for friendEmail in plan[1]:
+                    emailToRoom[friendEmail] = desiredRoom
+
+                # mark this room as occupied
+                rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
