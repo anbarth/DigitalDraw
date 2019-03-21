@@ -4,11 +4,50 @@
 
 rooms = {
     # room type : [# people allowed, # rooms of this type]
-    "r1" : [1, 3],
-    "r2" : [2, 1],
-    "r3" : [3, 1]
+    "Atwood single" : [1, 48],
+    "Atwood suite double" : [2, 12], 
+    "Atwood triple" : [3, 12], 
+    "Atwood column double/efficiency" : [2, 10], 
+    "Case single" : [1, 32],
+    "Case double" : [2, 32],
+    "Case triple" : [3, 1],
+    "Case quad" : [4, 4],
+    "Drinkward suite single" : [1, 28],
+    "Drinkward suite triple" : [3, 10],
+    "Drinkward O-side single" : [1, 37],
+    "Drinkward O-side triple" : [3, 25],
+    "East single" : [1, 16],
+    "East double" : [2, 36],
+    "Linde single in a suite with 2 singles, 2 doubles" : [1, 12],
+    "Linde double in a suite with 2 singles, 2 doubles" : [2, 12],
+    "Linde single in a suite with 4 singles, 1 double" : [1, 8],
+    "Linde double in a suite with 4 singles, 1 double" : [2, 2],
+    "Linde double in a suite with 3 doubles" : [2, 12],
+    "Linde double in a suite with 2 doubles" : [2, 2],
+    "North single" : [1, 16],
+    "North double" : [2, 36],
+    "Sontag single in a suite with 3 singles, 1 double" : [1, 36], 
+    "Sontag double in a suite with 3 singles, 1 double" : [2, 12],
+    "Sontag single in a suite with 2 singles, 1 double" : [1, 6],
+    "Sontag double in a suite with 2 singles, 1 double" : [2, 3],
+    "Sontag single in a suite with 1 single, 1 double" : [1, 2],
+    "Sontag double in a suite with 1 single, 1 double" : [2, 2],
+    "South single in a suite with 4 singles" : [1, 32], 
+    "South single in a suite with 3 singles" : [1, 24],
+    "South single in a suite with 2 singles" : [1, 8],
+    "South double" : [2, 4],
+    "West single" : [1, 16],
+    "West double" : [2, 36]
 }
 
+# list of lock-pullable situations
+# add drinkward?
+# [room you pull, room you get to lock-pull]
+lockPullable = {"Sontag single in a suite with 3 singles, 1 double": "Sontag single in a suite with 3 singles, 1 double",
+                "Sontag single in a suite with 2 singles, 1 double": "Sontag double in a suite with 2 singles, 1 double",
+                "Sontag single in a suite with 1 single, 1 double": "Sontag double in a suite with 1 single, 1 double",
+                "South single in a suite with 3 singles": "South single in a suite with 3 singles",
+                "Linde single in a suite with 2 singles, 2 doubles": "Linde double in a suite with 2 singles, 2 doubles"}
 
 ##############################################################
 ###################### READING ###############################
@@ -17,13 +56,14 @@ rooms = {
 import csv
 
 # a person has only:
-# a name, a list of room draw plans, and a list of people who can pull them
+# a list of room draw plans, a list of people who can pull them
 # because as RALs, that is all we care about
 class Person:
-    def __init__(self, email, plans, pullBuddies):
-        self.email = email
+    def __init__(self, plans, pullBuddies):
+        #self.email = email
         self.plans = plans
         self.pullBuddies = pullBuddies
+
 
 def cleanEmail(email):
     parts = email.split("@")
@@ -69,7 +109,7 @@ for row in reader:
 
         plans.append([room, pulls, lockPulls])
     
-    emailToPerson[email] = Person(email, plans, pullBuds)
+    emailToPerson[email] = Person(plans, pullBuds)
 
 
 emailToNum = {
@@ -118,32 +158,62 @@ for myNum in range(len(emailToNum)):
             # pull myself into the room & mark it occupied
             emailToRoom[myEmail] = desiredRoom
             rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
+            if(rooms[desiredRoom][1] <= 0): print(desiredRoom+" closed on "+str(myNum))
 
             # now try to pull my friend into another room...
+            pulledFriend = False # boolean that i need for lock-pulling purposes
+
             # must be more rooms of this type
             if rooms[desiredRoom][1] > 0: 
-                # must have someone to pull
-                if len(plan[1]) > 0:
+                # must not be a sontag 3-man
+                if desiredRoom != "Sontag single in a suite with 1 single, 1 double":
+                    # must have someone to pull
+                    if len(plan[1]) > 0:
 
-                    friendEmail = plan[1][0]
-                    friend = emailToPerson[friendEmail]
+                        friendEmail = plan[1][0]
+                        friend = emailToPerson[friendEmail]
 
-                    # i must be allowed to pull this person
-                    if myEmail in friend.pullBuddies:
-                        # this person cant already have a room
-                        if friendEmail not in emailToRoom:
-                            # phew! that was a lot of nested ifs
-                            # pull my friend into a room & mark it occupied
-                            emailToRoom[friendEmail] = desiredRoom
-                            rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
+                        # i must be allowed to pull this person
+                        if myEmail in friend.pullBuddies:
+                            # this person cant already have a room
+                            if friendEmail not in emailToRoom:
+                                # phew! that was a lot of nested ifs
+                                # pull my friend into a room & mark it occupied
+                                emailToRoom[friendEmail] = desiredRoom
+                                rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
+                                if(rooms[desiredRoom][1] <= 0): print(desiredRoom+" closed on "+str(myNum))
+                                pulledFriend = True
                 
-            # now try to lock pull iff my pull was successful OR this is a sontag 3-man
-            # first, check that i did actually do a pull (or that i pulled a sontag 3-man)
-                # ^ i think the easiest way to do that will be to just add a boolean lmao
-            # then check that i want to lock-pull the correct # of people
-            # then check that my lock-pullable room type is still available
-            # then check that my lock pull wants to be pulled & hasnt found a room already
-            # then pull!
+            # now try to lock pull...
+            # must be a lockpullable room
+            if desiredRoom in lockPullable:
+                # must have taken the other single, OR it's a sontag 3-man
+                if pulledFriend or desiredRoom == "Sontag single in a suite with 1 single, 1 double":
+                    lockPullRoom = lockPullable[desiredRoom]
+                    # must be trying to pull the right # of people
+                    if len(plan[2]) == rooms[lockPullRoom][0]:
+                        # room must still be available
+                        if rooms[lockPullRoom][1] > 0:
+                            # now check that my friends are OK with being pulled
+                            isValid = True
+                            for friendEmail in plan[2]:
+                                friend = emailToPerson[friendEmail]
+
+                                # am i allowed to pull this person?
+                                if myEmail not in friend.pullBuddies:
+                                    isValid = False
+
+                                # has this person already found a room?
+                                if friendEmail in emailToRoom:
+                                    isValid = False
+                            
+                            if isValid:
+                                # pull in all my friends!
+                                for friendEmail in plan[2]:
+                                    emailToRoom[friendEmail] = lockPullRoom
+                                # and mark the lock-pulled room as occupied
+                                rooms[lockPullRoom][1] = rooms[lockPullRoom][1] - 1
+                                if(rooms[lockPullRoom][1] <= 0): print(lockPullRoom+" closed on "+str(myNum))
 
         # case 2: pulling a double, triple, or quad
         else:
@@ -152,6 +222,7 @@ for myNum in range(len(emailToNum)):
             if len(plan[1]) != rooms[desiredRoom][0]-1:
                 print(myEmail+" made an invalid pull - not enough roommates")
                 isValid = False
+
             # are my roomies also ok with this plan?
             for friendEmail in plan[1]:
                 friend = emailToPerson[friendEmail]
@@ -174,3 +245,4 @@ for myNum in range(len(emailToNum)):
 
                 # mark this room as occupied
                 rooms[desiredRoom][1] = rooms[desiredRoom][1] - 1
+                if(rooms[desiredRoom][1] <= 0): print(desiredRoom+" closed on "+str(myNum))

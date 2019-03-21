@@ -37,9 +37,10 @@ rooms = {
 }
 
 # list of lock-pullable situations
+# add drinkward?
 # [room you pull, room you get to lock-pull]
-lockPullable = [["Sontag single in a suite with 3 singles, 1 double","Sontag double in a suite with 3 singles, 1 double"],
-                ["Sontag single in a suite with 2 singles, 1 double","Sontag double in a suite with 2 singles, 1 double"],
-                ["Sontag single in a suite with 1 single, 1 double","Sontag double in a suite with 1 single, 1 double"],
-                ["South single in a suite with 3 singles","South single in a suite with 3 singles"],
-                ["Linde single in a suite with 2 singles, 2 doubles","Linde double in a suite with 2 singles, 2 doubles"]]
+lockPullable = {"Sontag single in a suite with 3 singles, 1 double": "Sontag single in a suite with 3 singles, 1 double",
+                "Sontag single in a suite with 2 singles, 1 double": "Sontag double in a suite with 2 singles, 1 double",
+                "Sontag single in a suite with 1 single, 1 double": "Sontag double in a suite with 1 single, 1 double",
+                "South single in a suite with 3 singles": "South single in a suite with 3 singles",
+                "Linde single in a suite with 2 singles, 2 doubles": "Linde double in a suite with 2 singles, 2 doubles"}

@@ -1,9 +1,11 @@
 Timestamp,Email Address,What type of room do you plan to pull?,List the HMC email addresses of the person(s) you plan to pull:,List the HMC email addresses of the persons(s) you plan to *lock pull*,Are you done making plans?,What type of room do you plan to pull?,List the HMC email addresses of the person(s) you plan to pull:,List the HMC email addresses of the persons(s) you plan to *lock pull*,Are you done making plans?,What type of room do you plan to pull?,List the HMC email addresses of the person(s) you plan to pull:,List the HMC email addresses of the persons(s) you plan to *lock pull*,Are you done making plans?,What type of room do you plan to pull?,List the HMC email addresses of the person(s) you plan to pull:,List the HMC email addresses of the persons(s) you plan to *lock pull*,Are you done making plans?,List the HMC email addresses of people who can pull you:
-3/20/2019 8:58,a@g.hmc.edu,r1,c@hmc,b@hmc,"No, I would like to make more plans",r1,b@hmc,none,No,r1,d@hmc,,yes,,,,,"b@hmc, c@hmc, d@hmc, g@hmc"
-3/20/2019 8:59,b@g.hmc.edu,r2,d@hmc,,"No, I would like to make more plans",r1,d@hmc,,yes,,,,,,,,,"d@hmc, c@hmc"
-3/20/2019 8:59,c@g.hmc.edu,r3,"a@hmc, b@hmc",,"Yes, I am done making plans",,,,,,,,,,,,,"a@hmc, b@hmc"
-3/18/2019 11:45,d@g.hmc.edu,r1,none,none,"No, I would like to make more plans",r2,b@hmc,,yes,,,,,,,,,b@hmc
-,e@hmc,r3,"a@hmc, c@hmc",none,"Yes, I am done making plans",,,,,,,,,,,,,"f@hmc, g@hmc"
-,f@hmc,r3,none,none,"No, I would like to make more plans",r1,e@hmc,,yes,,,,,,,,,none
-,g@hmc,r1,none,,"No, I would like to make more plans",r3,e@hmc,,no,r3,"e@hmc,h@hmc",,,,,,,none
-,h@hmc,r1,a@hmc,,"Yes, I am done making plans",,,,,,,,,,,,,g@hmc
+3/20/2019 8:58,a@g.hmc.edu,"Sontag single in a suite with 1 single, 1 double",b@hmc,c@hmc,yep,,,,,,,,,,,,,"b@hmc, c@hmc, d@hmc, g@hmc"
+3/20/2019 8:59,b@g.hmc.edu,"Sontag single in a suite with 1 single, 1 double",c@hmc,"d@hmc, e@hmc",yep,,,,,,,,,,,,,a@hmc
+3/20/2019 8:59,c@g.hmc.edu,West double,none,none,"No, I would like to make more plans",South single in a suite with 3 singles,none,none,,,,,,,,,,"a@hmc, b@hmc"
+3/18/2019 11:45,d@g.hmc.edu,West single,none,none,"No, I would like to make more plans",r2,b@hmc,,yes,,,,,,,,,b@hmc
+,e@hmc,West single,none,none,"Yes, I am done making plans",,,,,,,,,,,,,b@hmc
+,f@hmc,"Sontag single in a suite with 2 singles, 1 double",g@hmc,h@hmc,"Yes, I am done making plans",,,,,,,,,,,,,none
+,g@hmc,West double,h@hmc,,"Yes, I am done making plans",,,,,,,,,,,,,f@hmc
+,h@hmc,South single in a suite with 3 singles,i@hmc,j@hmc,"Yes, I am done making plans",,,,,,,,,,,,,none
+,i@hmc,West single,none,,"Yes, I am done making plans",,,,,,,,,,,,,h@hmc
+,j@hmc,West single,i@hmc,,"Yes, I am done making plans",,,,,,,,,,,,,h@hmc
