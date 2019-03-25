@@ -12,8 +12,10 @@ rooms = {
     "Case double" : [2, 32],
     "Case triple" : [3, 1],
     "Case quad" : [4, 4],
-    "Drinkward suite single" : [1, 28],
-    "Drinkward suite triple" : [3, 10],
+    "Drinkward single in a suite with 3 singles, 1 triple" : [1, 24],
+    "Drinkward triple in a suite with 3 singles, 1 triple" : [3, 8],
+    "Drinkward single in a suite with 2 singles, 1 triple" : [1, 4],
+    "Drinkward triple in a suite with 2 singles, 1 triple" : [3, 2],
     "Drinkward O-side single" : [1, 37],
     "Drinkward O-side triple" : [3, 25],
     "East single" : [1, 16],
@@ -41,13 +43,13 @@ rooms = {
 }
 
 # list of lock-pullable situations
-# add drinkward?
 # [room you pull, room you get to lock-pull]
 lockPullable = {"Sontag single in a suite with 3 singles, 1 double": "Sontag single in a suite with 3 singles, 1 double",
                 "Sontag single in a suite with 2 singles, 1 double": "Sontag double in a suite with 2 singles, 1 double",
                 "Sontag single in a suite with 1 single, 1 double": "Sontag double in a suite with 1 single, 1 double",
                 "South single in a suite with 3 singles": "South single in a suite with 3 singles",
-                "Linde single in a suite with 2 singles, 2 doubles": "Linde double in a suite with 2 singles, 2 doubles"}
+                "Linde single in a suite with 2 singles, 2 doubles": "Linde double in a suite with 2 singles, 2 doubles",
+                "Drinkward single in a suite with 2 singles, 1 triple": "Drinkward triple in a suite with 2 singles, 1 triple"}
 
 ##############################################################
 ###################### READING ###############################
