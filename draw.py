@@ -113,8 +113,19 @@ for row in reader:
     
     emailToPerson[email] = Person(plans, pullBuds)
 
+# all-nums should have ALL room draw participants, listed by hmc email
+# listed in order from senior 1 to sophomore worstest
+# numbers shalt start at 0
+emailToNum = {}
+allNums = open("all-nums.csv")
+numsReader = csv.reader(allNums,delimiter=',')
+thisNum = 0
+for row in numsReader:
+    thisEmail = cleanEmail(row[0])
+    emailToNum[thisEmail] = thisNum
+    thisNum += 1
 
-emailToNum = {
+'''emailToNum = {
     "a" : 0,
     "b" : 1,
     "c" : 2,
@@ -123,7 +134,7 @@ emailToNum = {
     "f": 5,
     "g": 6,
     "h": 7
-}
+}'''
 
 
 numToEmail = dict((reversed(item) for item in emailToNum.items()))
@@ -137,6 +148,7 @@ emailToRoom = {}
 
 for myNum in range(len(emailToNum)):
     myEmail = numToEmail[myNum]
+    #print(myEmail)
 
     if myEmail not in emailToPerson:
         print(myEmail+" failed to make any plans")
@@ -154,6 +166,8 @@ for myNum in range(len(emailToNum)):
         # no more rooms of this type
         if rooms[desiredRoom][1] <= 0:
             continue
+
+        # TODO implement in-dorm? at all?
 
         # case 1: pulling a single
         if rooms[desiredRoom][0] == 1:

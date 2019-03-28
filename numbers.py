@@ -3,8 +3,7 @@ import random
 
 # namesFileName is where all the people in this class year doing room draw are listed
 # numbersFileName is where you want to put the numbers
-# classYr is a string: "Sophomore", "Junior", or "Senior"
-def assignNumbers(namesFileName, numbersFileName, classYr):
+def assignNumbers(namesFileName, numbersFileName):
 
     namesFile = open(namesFileName)
     reader = csv.reader(namesFile)
@@ -19,7 +18,7 @@ def assignNumbers(namesFileName, numbersFileName, classYr):
     writer = csv.writer(numsFile)
 
     for i in range(len(names)):
-        writer.writerow([names[i],classYr+" "+str(i+1)])
+        writer.writerow([names[i],str(i+1)])
 
     numsFile.close()
 
@@ -47,7 +46,7 @@ def assignTiers(namesFileName, tiersFileName):
     random.shuffle(names)
 
     for i in range(len(names)):
-        names[i][1] = str((i % 6) +1)
+        names[i][1] = str((i % 6) + 1)
     names.sort(key = sortHelper)
 
     tiersFile = open(tiersFileName,'w',newline='')
