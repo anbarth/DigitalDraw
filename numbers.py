@@ -70,25 +70,21 @@ def assignTieredNumbers(namesFileName, numbersFileName, yearNum):
     goodNames = []
     medNames = []
     badNams = []
-    classYr = ""
 
     if yearNum == 0:
         goodNames = [name[0] for name in names if name[1] == 1 or name[1] == 2]
         medNames = [name[0] for name in names if name[1] == 3 or name[1] == 4]
         badNames = [name[0] for name in names if name[1] == 5 or name[1] == 6]
-        classYr = "Sophomore"
 
     if yearNum == 1:
         goodNames = [name[0] for name in names if name[1] == 3 or name[1] == 5]
         medNames = [name[0] for name in names if name[1] == 1 or name[1] == 6]
         badNames = [name[0] for name in names if name[1] == 2 or name[1] == 4]
-        classYr = "Junior"
 
     if yearNum == 2:
         goodNames = [name[0] for name in names if name[1] == 4 or name[1] == 6]
         medNames = [name[0] for name in names if name[1] == 2 or name[1] == 5]
         badNames = [name[0] for name in names if name[1] == 1 or name[1] == 3]
-        classYr = "Senior"
 
     random.shuffle(goodNames)
     random.shuffle(medNames)
@@ -106,7 +102,7 @@ def assignTieredNumbers(namesFileName, numbersFileName, yearNum):
     writer = csv.writer(numsFile)
 
     for i in range(len(orderedNames)):
-        writer.writerow([orderedNames[i],classYr+" "+str(i+1)])
+        writer.writerow([orderedNames[i],str(i+1)])
 
     numsFile.close()
 
