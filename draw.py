@@ -7,7 +7,8 @@ rooms = {
     "Atwood single" : [1, 48],
     "Atwood suite double" : [2, 12], 
     "Atwood triple" : [3, 12], 
-    "Atwood column double/efficiency" : [2, 10], 
+    "Atwood column double" : [2, 4], 
+    "Atwood efficiency" : [2, 6],
     "Case single" : [1, 32],
     "Case double" : [2, 32],
     "Case triple" : [3, 1],
@@ -57,8 +58,7 @@ lockPullable = {"Sontag single in a suite with 3 singles, 1 double": "Sontag sin
 
 import csv
 
-# a person has only:
-# a list of room draw plans, a list of people who can pull them
+# a person has only a list of plans & a list of people who can pull them
 # because as RALs, that is all we care about
 class Person:
     def __init__(self, plans, pullBuddies):
@@ -77,7 +77,9 @@ responses = open("ddraw-responses.csv")
 reader = csv.reader(responses,delimiter=',')
 next(reader) # skip the first row
 
-MAX_NUM_PLANS = 4
+MAX_NUM_PLANS = 20
+
+####### read in the plans #########
 
 for row in reader:
     email = cleanEmail(row[1])
@@ -113,8 +115,11 @@ for row in reader:
     
     emailToPerson[email] = Person(plans, pullBuds)
 
+
+####### read in the numbers #########
+
 # all-nums should have ALL room draw participants, listed by hmc email
-# listed in order from senior 1 to sophomore worstest
+# listed in order from senior 1 to sophomore worst
 # numbers shalt start at 0
 emailToNum = {}
 allNums = open("all-nums.csv")
@@ -148,7 +153,6 @@ emailToRoom = {}
 
 for myNum in range(len(emailToNum)):
     myEmail = numToEmail[myNum]
-    #print(myEmail)
 
     if myEmail not in emailToPerson:
         print(myEmail+" failed to make any plans")
